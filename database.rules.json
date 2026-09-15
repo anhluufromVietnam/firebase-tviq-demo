@@ -1,0 +1,15 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "notes": {
+      ".indexOn": ["ownerId"],
+      ".read": "auth != null && query.orderByChild == 'ownerId' && query.equalTo == auth.uid",
+      "$noteId": {
+        ".read": "auth != null && data.child('ownerId').val() == auth.uid",
+        ".write": "auth != null && ((!data.exists() && newData.child('ownerId').val() == auth.uid) || (data.exists() && data.child('ownerId').val() == auth.uid && newData.child('ownerId').val() == data.child('ownerId').val() && newData.child('createdAt').val() == data.child('createdAt').val()))",
+        ".validate": "newData.hasChildren(['title', 'content', 'ownerId', 'createdAt', 'updatedAt']) && newData.numChildren() == 5 && newData.child('title').isString() && newData.child('title').val().length > 0 && newData.child('title').val().length <= 120 && newData.child('content').isString() && newData.child('content').val().length > 0 && newData.child('content').val().length <= 5000 && newData.child('ownerId').isString() && newData.child('createdAt').isNumber() && newData.child('createdAt').val() >= 0 && newData.child('updatedAt').isNumber() && newData.child('updatedAt').val() >= 0"
+      }
+    }
+  }
+}
